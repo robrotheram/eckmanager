@@ -1,0 +1,12 @@
+database:
+  uri: "./data" 
+
+kube:
+  config_path: "/home/robrotheram/.kube/config"
+
+server:
+  port: "8888"
+
+logging:
+  level: "info"
+  dir: "."

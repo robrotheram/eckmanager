@@ -1,0 +1,8 @@
+eckManager
+eckui/build
+eckui/node_modules
+
+data
+*.out
+
+server/ui
