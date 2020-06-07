@@ -49,6 +49,7 @@ class ProjectForm extends Component {
     this.state = {
       popOpen: false,
       Roles: [],
+      users:[],
       role: {
         username: "",
         role: ""
@@ -56,9 +57,21 @@ class ProjectForm extends Component {
     };
   }
 
+  getUserList = () =>{
+    eckApi.getUsers().then((response) => {
+      let data = response.data
+      this.setState({users: data})
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
   componentDidMount() {
     console.log(this.props.match);
+    this.getUserList()
     if (this.props.match.params.id !== undefined ) {
+     
       eckApi
         .getProject(
           this.props.match.params.id
@@ -158,6 +171,9 @@ class ProjectForm extends Component {
 
   render() {
 
+
+    let user_options = this.state.users.map(user => {return {value: user.username, text: user.first_name+" "+user.last_name} })
+    console.log(user_options)
     const actions = [
       {
         render: item => {
@@ -221,7 +237,7 @@ class ProjectForm extends Component {
         <EuiFlexGroup>
           <EuiFlexItem>
             <EuiFormRow label="Username">
-              <EuiFieldText icon="user" placeholder="John Doe" value={this.state.role.username} name="username" onChange={this.changeRoleUsername} />
+              <EuiSelect icon="user" placeholder="John Doe" options={user_options} value={this.state.role.username} name="username" onChange={this.changeRoleUsername} />
             </EuiFormRow>
           </EuiFlexItem>
           <EuiFlexItem>

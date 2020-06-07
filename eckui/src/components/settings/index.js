@@ -14,10 +14,11 @@ import {
   EuiFlexItem,
   EuiFlexGroup,
   EuiSpacer,
-  EuiText
+  EuiText,
+  EuiHorizontalRule
 } from '@elastic/eui';
 import eckApi from "../../store";
-
+import Users from './users'
 class Settings extends Component {
     constructor(props) {
       super(props);
@@ -136,6 +137,12 @@ class Settings extends Component {
   </EuiFormRow>
   : null}
 
+<EuiHorizontalRule/>
+<EuiText>
+  <h2>Users</h2>
+</EuiText>
+<EuiSpacer></EuiSpacer>
+<Users></Users>
                 
                   </EuiPageContentBody>
                 </EuiPageContent>

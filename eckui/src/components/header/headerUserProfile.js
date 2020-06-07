@@ -10,8 +10,7 @@ import {
     EuiPopover,
   } from '@elastic/eui';
 
-import eckAPI from "../../store";
-import {Auth} from "../../App"
+import eckapi, {Auth} from "../../store";
 export default class extends Component {
     constructor(props) {
       super(props);
@@ -23,9 +22,17 @@ export default class extends Component {
     }
   
     componentDidMount() {
-        eckAPI.getUser().then((response) => {
-            this.setState({username: response.data.username})
+        if (Auth.getUsername() === ""){
+          eckapi.getUser().then(() => {
+            this.setState({username: Auth.getUsername()})
+          })
+        }
+        Auth.setCallback("header" , (user)=>{
+          this.setState({username: user.username})
         })
+    }
+    componentWillUnmount() {
+      Auth.removeCallback("header")
     }
 
     onMenuButtonClick = () => {

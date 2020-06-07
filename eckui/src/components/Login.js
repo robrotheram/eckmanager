@@ -44,8 +44,8 @@ class LoginForm extends Component {
   constructor(props) {
     super(props);    
     this.state = {
-      username: "test",
-      password: "test",
+      username: "admin",
+      password: "y1cs3SPu",
     }; 
   }
 
@@ -59,15 +59,10 @@ class LoginForm extends Component {
     console.log(this.state)
     eckApi.login(this.state).then((response) => {
       let token = response.data.token
+      console.log(response)
       if (token !== undefined) {
-        window.sessionStorage.setItem("token", token);
-        Auth.user = response.data
         this.props.updateRoute()
       }
-    
-      console.log(response.data)
-  
-    
   })
   .catch(function (error) {
     console.log(error);
@@ -123,12 +118,66 @@ class LoginForm extends Component {
 }
 
 const RegisterForm = (props) => {
+  let user = {
+    username:"",
+    first_name: "",
+    last_name: "",
+    password: "",
+    password_confirm: ""
+  }
+
+  let onTextChange = (e) =>{
+    user[e.target.name] =  e.target.value
+  }
+
+  function isStrongPwd(password) {
+ 
+    var regExp = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%&*()]).{8,}/;
+
+    var validPassword = regExp.test(password);
+
+    return validPassword;
+
+}
+
+  let register = () => {
+    if (user.password !== user.password_confirm) {
+      alert("Passwords do not match")
+    }else{
+      if (!isStrongPwd(user.password)){
+        alert("Passwords not strong enough. Must contain 8 character a uppercase, digit and symbol")
+      }else {
+        eckApi.createUser(user).then(resp =>{
+          props.switch()
+        }).catch(error =>{
+          console.log(error);
+        })
+      }
+      
+    }
+    
+  }
+
   return (
     <Fragment>
+            <EuiFlexGroup>
+        <EuiFlexItem>
+          <EuiFormRow label="First Name:" fullWidth>
+            <EuiFieldText placeholder="First name" name="first_name" fullWidth aria-label="Email" onChange={onTextChange} />
+          </EuiFormRow>
+        </EuiFlexItem>
+      </EuiFlexGroup>
+      <EuiFlexGroup>
+        <EuiFlexItem>
+          <EuiFormRow label="Last Name:" fullWidth>
+            <EuiFieldText placeholder="Last name" name="last_name" fullWidth aria-label="Email" onChange={onTextChange} />
+          </EuiFormRow>
+        </EuiFlexItem>
+      </EuiFlexGroup>
       <EuiFlexGroup>
         <EuiFlexItem>
           <EuiFormRow label="Email:" fullWidth>
-            <EuiFieldText placeholder="Email" fullWidth aria-label="Email" />
+            <EuiFieldText placeholder="Email"  name="username" fullWidth aria-label="Email" onChange={onTextChange} />
           </EuiFormRow>
         </EuiFlexItem>
       </EuiFlexGroup>
@@ -138,18 +187,18 @@ const RegisterForm = (props) => {
             <EuiFieldPassword
               placeholder="Password"
               fullWidth
+              name="password"
               aria-label="Password"
+              onChange={onTextChange}
             />
           </EuiFormRow>
-        </EuiFlexItem>
-      </EuiFlexGroup>
-      <EuiFlexGroup>
-        <EuiFlexItem>
-          <EuiFormRow label="Repeat Password:" fullWidth>
+          <EuiFormRow label="Confirm Password:" fullWidth>
             <EuiFieldPassword
               placeholder="Password"
               fullWidth
+              name="password_confirm"
               aria-label="Password"
+              onChange={onTextChange}
             />
           </EuiFormRow>
         </EuiFlexItem>
@@ -157,10 +206,7 @@ const RegisterForm = (props) => {
 
       <EuiSpacer size="l" />
       <EuiFlexGroup justifyContent="spaceEvenly">
-        <EuiFlexItem grow={false} style={{ minWidth: 300 }}>
-          <EuiButton type="submit">Register</EuiButton>
-        </EuiFlexItem>
-        <EuiFlexItem grow={false} style={{ minWidth: 300 }}>
+      <EuiFlexItem grow={false} style={{ minWidth: 300 }}>
           <EuiButton
             type="submit"
             fill
@@ -170,6 +216,10 @@ const RegisterForm = (props) => {
             Back to login
           </EuiButton>
         </EuiFlexItem>
+        <EuiFlexItem grow={false} style={{ minWidth: 300 }}>
+          <EuiButton type="submit" onClick={register}>Register</EuiButton>
+        </EuiFlexItem>
+        
       </EuiFlexGroup>
     </Fragment>
   );

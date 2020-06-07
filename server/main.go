@@ -50,12 +50,21 @@ func run(cmd *cobra.Command, args []string) {
 
 	kubeClinet, meticClient := kubeClientSetup(&config.Kube)
 	datastore := setupDatastore(config)
+	checkAndCreateAdmin(datastore)
 	apiserver := setupAPIServer(datastore, kubeClinet, meticClient)
 
 	setupPodMonitoring(apiserver, meticClient)
 	setupAuditEvents(config)
 	startServer(config, apiserver)
 
+}
+
+func checkAndCreateAdmin(datastore *acl.Datastore) {
+	var user acl.User
+	datastore.DB.One("Username", "admin", &user)
+	if user.Username != "admin" {
+		acl.CreateDefaultUser(datastore)
+	}
 }
 
 func setupAuditEvents(config *conf.Config) {

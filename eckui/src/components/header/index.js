@@ -3,7 +3,7 @@ import useBreadcrumbs from 'use-react-router-breadcrumbs';
 
 import HeaderUserMenu from "./headerUserProfile"
 import { withRouter } from "react-router-dom"
-import { Auth } from "../../App"
+import { Auth } from "../../store"
 
 import {
   EuiHeader,

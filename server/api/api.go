@@ -46,7 +46,12 @@ func (api *API) InitApiRoutes(r *mux.Router) *mux.Router {
 	r.Handle("/api/user", (api.createUser())).Methods("PUT")
 
 	r.Handle("/api/user", api.AuthMiddleware(api.getUserInfo(), acl.PROJECT_VIEW, acl.VIEW)).Methods("Get")
+	r.Handle("/api/perms", api.AuthMiddleware(api.getUserPermission(), acl.PROJECT_VIEW, acl.VIEW)).Methods("Get")
+	r.Handle("/api/users", api.AuthMiddleware(api.getUsers(), acl.CREATE_PROJECT)).Methods("Get")
+
 	r.Handle("/api/user/{id}", api.AuthMiddleware(api.getUserHandler(), acl.PROJECT_VIEW)).Methods("GET")
+	r.Handle("/api/user/{id}", api.AuthMiddleware(api.updateUserHandler(), acl.PROJECT_VIEW)).Methods("POST")
+	r.Handle("/api/user/{id}", api.AuthMiddleware(api.deteleUserHandler(), acl.PROJECT_VIEW)).Methods("DELETE")
 
 	r.Handle("/api/project/{id}/role", api.AuthMiddleware(api.addRoleToProject(), acl.CREATE_PROJECT)).Methods("PUT")
 	r.Handle("/api/project/{id}/metrics", api.AuthMiddleware(api.getProjectMetrics(), acl.PROJECT_VIEW, acl.VIEW)).Methods("GET")
@@ -64,16 +69,16 @@ func (api *API) InitApiRoutes(r *mux.Router) *mux.Router {
 	r.Handle("/api/license", api.AuthMiddleware(api.getLicense(), acl.CREATE_PROJECT)).Methods("GET")
 
 	// /*CREATE DEPLOYMENTS*/
-	r.Handle("/api/project/{id}/deployment", api.AuthMiddleware(api.createDeployment(), acl.CREATE_PROJECT, acl.Create)).Methods("PUT")
+	r.Handle("/api/project/{id}/deployment", api.AuthMiddleware(api.createDeployment(), acl.CREATE_PROJECT, acl.Create, acl.Edit)).Methods("PUT")
 	r.Handle("/api/project/{id}/deployments", api.AuthMiddleware(api.getDeploymentHanadler(), acl.PROJECT_VIEW, acl.VIEW)).Methods("GET")
 	r.Handle("/api/project/{id}/deployments/{deployment_id}", api.AuthMiddleware(api.getDeploymentHandler(), acl.PROJECT_VIEW, acl.VIEW)).Methods("GET")
 	r.Handle("/api/project/{id}/deployments/{deployment_id}/status", api.AuthMiddleware(api.getDeploymentStatus(), acl.PROJECT_VIEW, acl.VIEW)).Methods("GET")
 	r.Handle("/api/project/{id}/deployments/{deployment_id}/events", api.AuthMiddleware(api.getDeploymentEvents(), acl.PROJECT_VIEW, acl.VIEW)).Methods("GET")
-	r.Handle("/api/project/{id}/deployments/{deployment_id}", api.AuthMiddleware(api.detleteDeploymentHandler(), acl.CREATE_PROJECT, acl.Create)).Methods("DELETE")
+	r.Handle("/api/project/{id}/deployments/{deployment_id}", api.AuthMiddleware(api.detleteDeploymentHandler(), acl.CREATE_PROJECT, acl.Create, acl.Edit)).Methods("DELETE")
 
 	r.Handle("/api/project/{id}/deployments/{deployment_id}/elasticsearch", api.AuthMiddleware(api.getDeploymentElasticsearchHanadler(), acl.PROJECT_VIEW, acl.VIEW)).Methods("GET")
 	r.Handle("/api/project/{id}/deployments/{deployment_id}/kibana", api.AuthMiddleware(api.getDeploymentKibanaHanadler(), acl.PROJECT_VIEW, acl.VIEW)).Methods("GET")
 	r.Handle("/api/project/{id}/deployments/{deployment_id}/secrets", api.AuthMiddleware(api.getDeploymentSecrets(), acl.PROJECT_VIEW, acl.VIEW)).Methods("GET")
-	r.Handle("/api/project/{id}/deployments/{deployment_id}/secrets", api.AuthMiddleware(api.deleteDeploymentSecrets(), acl.CREATE_PROJECT, acl.Create)).Methods("DELETE")
+	r.Handle("/api/project/{id}/deployments/{deployment_id}/secrets", api.AuthMiddleware(api.deleteDeploymentSecrets(), acl.CREATE_PROJECT, acl.Create, acl.Edit)).Methods("DELETE")
 	return r
 }

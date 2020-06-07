@@ -45,9 +45,9 @@ func (p *Project) UpdateWithProject(project Project) {
 	if p.Description != project.Description {
 		p.Description = project.Description
 	}
-	if len(p.RoleMappings) != len(project.RoleMappings) {
-		p.RoleMappings = project.RoleMappings
-	}
+	p.RoleMappings = project.RoleMappings
+	p.Roles = project.Roles
+
 	if p.Cpu != project.Cpu {
 		p.Cpu = project.Cpu
 	}
@@ -59,15 +59,26 @@ func (p *Project) UpdateWithProject(project Project) {
 	}
 }
 
-func (p *Project) HasPermission(u User, a Action) bool {
+func (p *Project) HasPermission(u User, actions []Action) bool {
 	for _, rm := range p.RoleMappings {
 		if rm.User == u.Username {
-			if rm.Role.HasAction(a) {
-				return true
+			for _, action := range actions {
+				if rm.Role.HasAction(action) {
+					return true
+				}
 			}
 		}
 	}
 	return false
+}
+
+func (p *Project) GetActions(u User) []Action {
+	for _, rm := range p.RoleMappings {
+		if rm.User == u.Username {
+			return rm.Role.Actions
+		}
+	}
+	return []Action{}
 }
 
 func (p *Project) SetUser(r RoleUserMapping) {
@@ -99,7 +110,7 @@ func (p *Project) Delete(ds Datastore) error {
 func (p *Project) Get(ds Datastore, kubeClient dynamic.Interface) error {
 	err := ds.DB.One("Id", p.Id, p)
 	if err != nil {
-		return err
+		return fmt.Errorf("Could Not find project with id %s, error: %v", p.Id, err)
 	}
 	err = p.DoesExistInKube(kubeClient)
 	return err

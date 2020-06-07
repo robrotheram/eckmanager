@@ -21,9 +21,10 @@ import {
 } from '@elastic/eui';
 import { withRouter } from "react-router-dom"
 
-import eckApi from "../../store";
+import eckApi, {Auth }from "../../store";
 import { EuiHorizontalRule } from '@elastic/eui';
 import EventsView from './../events'
+
 
 const cardStatusStyle =  {
   "position": "absolute",
@@ -113,6 +114,7 @@ class Deployments extends Component {
   
     componentDidMount() {
       if (this.props.match.params.id !== undefined){
+        console.log(this.props.match.params)
         eckApi.getDeployments(this.props.match.params.id).then((response) => {
           if (Array.isArray(response.data)){
             console.log(response.data)
@@ -216,21 +218,27 @@ class Deployments extends Component {
 
                        <EuiFlexItem grow={false}>
                           <EuiFlexGroup fullWidth justifyContent="spaceBetween">
+                          {Auth.hasProjectPermission(this.props.match.params.id, "Edit") &&
                           <EuiFlexItem grow={false}>
                           <EuiButton fill onClick={() => this.props.history.push("/projects/"+this.props.match.params.id+"/create")}>
                             Create Deployment
                           </EuiButton>
                           </EuiFlexItem>
+    } 
+                          {Auth.hasProjectAdmin() &&
                           <EuiFlexItem grow={false}>
                           <EuiButton fill onClick={() => this.props.history.push("/projects/"+this.props.match.params.id+"/edit")}>
                             Edit Project
                           </EuiButton>
                           </EuiFlexItem>
+                          }
+                          {Auth.hasProjectAdmin() &&
                           <EuiFlexItem grow={false}>
                           <EuiButton fill  color="danger" onClick={this.deleteProject}>
                             Delete Project
                           </EuiButton>
                           </EuiFlexItem>
+                          }
                          
                     
                           </EuiFlexGroup>

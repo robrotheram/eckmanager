@@ -8,6 +8,7 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/context"
+	"github.com/gorilla/mux"
 	"github.com/robrotheram/eckmanager/acl"
 )
 
@@ -60,7 +61,10 @@ func (a *API) AuthMiddleware(next http.Handler, actions ...acl.Action) http.Hand
 		id := claims.(jwt.MapClaims)["id"].(string)
 		r.Header.Set("id", id)
 		user, err := a.getUser(id)
-		if !hasPermission(*user, actions) {
+		pid := mux.Vars(r)["id"]
+		project, err := a.GetProject(pid)
+
+		if !hasPermission(*user, actions) && !project.HasPermission(*user, actions) {
 			w.WriteHeader(http.StatusForbidden)
 			w.Write([]byte("Permission Denied"))
 			return
@@ -95,6 +99,8 @@ func (a *API) login() http.HandlerFunc {
 		} else {
 			w.Header().Set("Authorization", "Bearer "+token)
 			w.WriteHeader(http.StatusOK)
+			user.LastActive = time.Now()
+			user.Save(a.ds)
 			auth := acl.User{Token: token, Username: user.Username, Role: user.Role}
 			w.Header().Set("Content-Type", "application/json")
 			json.NewEncoder(w).Encode(auth)

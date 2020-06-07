@@ -15,61 +15,17 @@ import {ProjectList, ProjectForm} from './components/projects';
 
 
 import Login from "./components/Login";
-import eckAPI, {Notifications} from "./store";
+import eckAPI, {Notifications, Auth} from "./store";
 import Settings from "./components/settings";
-// This site has 3 pages, all of which are rendered
-// dynamically in the browser (not server rendered).
-//
-// Although the page does not ever refresh, notice how
-// React Router keeps the URL up to date as you navigate
-// through the site. This preserves the browser history,
-// making sure things like the back button and bookmarks
-// work properly.
-
-// A wrapper for <Route> that redirects to the login
-// screen if you're not yet authenticated.
-
-
-
-
-export const Auth = {
-   user:{},
-   hasPermission(role){
-    if(this.user.role === undefined){
-      return false
-    }
-    console.log(this.user.role)
-    return(role === this.user.role.Name)
-   },
-   hasProjectAdmin(){
-    return this.hasPermission("Project Admin Role")
-   },
-   isAuthenticated(){
-    let token = window.sessionStorage.getItem("token");
-    console.log("token", token)
-    if (token !== undefined && token !== null) {
-      return true;
-    }
-      return false
-   },
-
-  signout() {
-    window.sessionStorage.removeItem("token");
-    window.location.href = "/login";
-  }
-};
-
-
 
 function PrivateRoute({ children, ...rest }) {
-  async function asyncCall() {
-    eckAPI.getUser().then((response) => {
-      Auth.user = response.data; 
-    }).catch(function (error) {
-      Auth.signout();
-    });
-  }
-  if(Auth.isAuthenticated()){asyncCall()}
+  // async function asyncCall() {
+  //   eckAPI.getUser().then().catch(function (error) {
+  //     Auth.signout();
+  //   });
+  // }
+
+  // if(Auth.isAuthenticated()){asyncCall()}
   return (
     <Route
       {...rest}
@@ -97,6 +53,17 @@ export default class extends Component {
       isSideNavOpenOnMobile: false,
       selectedItemName: 'Lion stuff',
     };
+  }
+
+  componentDidMount() {
+    this.interval = setInterval(() => {
+      if(Auth.isAuthenticated()){
+        eckAPI.getUser();
+      }
+    }, 10000);
+  }
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   toggleOpenOnMobile = () => {

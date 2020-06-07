@@ -59,7 +59,10 @@ func (a *API) createProjects() http.HandlerFunc {
 			}
 		} else {
 			oldproject.UpdateWithProject(project)
+			logger.Debug(project)
+			logger.Debug(oldproject)
 			err = oldproject.Update(a.ds)
+
 			if err != nil {
 				w.WriteHeader(http.StatusBadRequest)
 				w.Write([]byte(err.Error()))
@@ -166,7 +169,7 @@ func (a *API) getProjectHandler() http.HandlerFunc {
 		filterProjects := []acl.Project{}
 		for _, p := range projects {
 
-			if p.HasPermission(*user, acl.VIEW) || a.hasPermission(*user, acl.PROJECT_VIEW) == nil {
+			if p.HasPermission(*user, []acl.Action{acl.VIEW, acl.PROJECT_VIEW}) {
 				filterProjects = append(filterProjects, p)
 			}
 		}

@@ -13,8 +13,8 @@ import {
   EuiFlexItem,
   EuiFlexGroup,
 } from '@elastic/eui';
-import eckApi from "../../store";
-import { Auth } from "../../App"
+import eckApi, { Auth } from "../../store";
+
 
 
 class Projects extends Component {

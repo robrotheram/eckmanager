@@ -1,13 +1,18 @@
-import {config} from './index'
-import axios from 'axios';
 
+import axios from 'axios';
+import { hexToHsv } from '@elastic/eui';
 
 export default class eckAPI {
 
-    constructor(){
+    constructor(config, auth){
         this.data = {}
         this.url = config.baseUrl
+        this.user = {}
+        this.auth = auth
+        this.getUser();
     }
+
+
 
 
     createConfig(){
@@ -19,7 +24,16 @@ export default class eckAPI {
            }
     }
 
-
+    
+    getUsers = () => {
+        return axios.get(this.url + '/users', this.createConfig())
+    }
+    getPerms = () => {
+        return axios.get(this.url + '/perms', this.createConfig()).then(resp => {
+            this.auth.setPermissions(resp.data)
+            return resp
+        })
+    }
 
     getProjects = () => {
         return axios.get(this.url + '/projects', this.createConfig())
@@ -100,13 +114,34 @@ export default class eckAPI {
     }
 
     login = (user) => {
-        return axios.post(this.url + '/login', user)
+        return axios.post(this.url + '/login', user).then(resp => {
+            console.log("USER",resp)
+            this.auth.update(resp.data)
+            this.getPerms().then(() => {
+                this.auth.update(resp.data)
+            })
+            return resp
+        })
     }
     register = (user) => {
         return axios.post(this.url + '/user', user)
     }
 
     getUser = () => {
-        return axios.get(this.url + '/user', this.createConfig())
+        return axios.get(this.url + '/user', this.createConfig()).then(resp => {
+            this.getPerms().then(() => {
+                this.auth.update(resp.data)
+            })
+            return resp
+        })
+    }
+    deleteUser = (user) => {
+        return axios.delete(this.url + '/user/'+user.username, this.createConfig())
+    }
+    updateUser = (user) => {
+        return axios.post(this.url + '/user/'+user.username, user, this.createConfig())
+    }
+    createUser = (user) => {
+        return axios.put(this.url + '/user', user, this.createConfig())
     }
 }

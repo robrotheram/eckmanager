@@ -10,5 +10,5 @@ server:
   port: "8888"
 
 logging:
-  level: "info"
+  level: "debug"
   dir: "."
