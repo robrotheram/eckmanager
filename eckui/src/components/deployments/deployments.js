@@ -203,7 +203,12 @@ class Deployments extends Component {
   
   
     render() {
+      if (this.props.match.params.id === "edit" || this.props.match.params.id ==="create"){
+        return null
+      }
+
         let quota  = this.state.quota
+
         return (
                 <EuiPageContent>
                   <EuiPageContentHeader>

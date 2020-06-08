@@ -296,6 +296,7 @@ class ProjectForm extends Component {
                   <EuiFieldNumber
                     placeholder="Placeholder text"
                     prepend="Cpu"
+                    fullWidth
                     aria-label="Use aria labels when no actual label is in use"
                     name="Cpu" value={this.state.Cpu} onChange={this.onTextChange} 
                   />
@@ -310,22 +311,9 @@ class ProjectForm extends Component {
                   <EuiFieldNumber
                     placeholder="Placeholder text"
                     prepend="Memory"
+                    fullWidth
                     aria-label="Project Memory Quota in Gigabyes"
                     name="Memory" value={this.state.Memory} onChange={this.onTextChange} 
-                  />
-                </EuiFormRow>
-              </EuiFlexItem>
-              <EuiFlexItem>
-                <EuiFormRow
-                  label="Project Disk Quota:"
-                  fullWidth
-                  helpText="Project Disk Quota in Gigabyes"
-                >
-                  <EuiFieldNumber
-                    placeholder="Placeholder text"
-                    prepend="Disk"
-                    aria-label="Use aria labels when no actual label is in use"
-                    name="Disk" value={this.state.Disk} onChange={this.onTextChange} 
                   />
                 </EuiFormRow>
               </EuiFlexItem>

@@ -169,7 +169,7 @@ func (a *API) getProjectHandler() http.HandlerFunc {
 		filterProjects := []acl.Project{}
 		for _, p := range projects {
 
-			if p.HasPermission(*user, []acl.Action{acl.VIEW, acl.PROJECT_VIEW}) {
+			if p.HasPermission(*user, []acl.Action{acl.VIEW, acl.PROJECT_VIEW}) || user.Role.Name == acl.Platform_ADMIN.Name {
 				filterProjects = append(filterProjects, p)
 			}
 		}
