@@ -45,7 +45,7 @@ class Settings extends Component {
 
       })
       .catch(function (error) {
-        console.log(error);
+        console.log(error);Settings
       });
     }
 
@@ -72,7 +72,7 @@ class Settings extends Component {
             console.log(resp);
         })
     }
-
+    Settings
 
     render() {
         return (
@@ -95,10 +95,7 @@ class Settings extends Component {
                   </EuiPageContentHeader>
                   <EuiPageContentBody>
                   <EuiText>
-  <h2>License</h2>
-</EuiText>
-
-{this.state.Data !== undefined ?(<div>
+  <h2>License</h2>Settingsv>
                   <EuiSpacer/>
                   Current License status:
                   <EuiCodeBlock language="json">
