@@ -121,6 +121,11 @@ func (a *API) updateUserHandler() http.HandlerFunc {
 			user.Role = role
 		}
 
+		if updateUser.Password != "" {
+			logger.Info("Updating users password")
+			user.Password = acl.HashAndSalt(updateUser.Password)
+		}
+
 		err = user.Update(a.ds)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
@@ -177,5 +182,22 @@ func (a *API) getUserPermission() http.HandlerFunc {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(perms)
+	})
+}
+
+func (a *API) updateUserInfo() http.HandlerFunc {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		user := context.Get(r, "user").(*acl.User)
+		user.Password = ""
+
+		token, err := getToken(user.Username)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte("Error generating JWT token: " + err.Error()))
+			return
+		}
+		user.Token = token
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(user)
 	})
 }

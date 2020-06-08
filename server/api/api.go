@@ -50,7 +50,7 @@ func (api *API) InitApiRoutes(r *mux.Router) *mux.Router {
 	r.Handle("/api/users", api.AuthMiddleware(api.getUsers(), acl.CREATE_PROJECT)).Methods("Get")
 
 	r.Handle("/api/user/{id}", api.AuthMiddleware(api.getUserHandler(), acl.PROJECT_VIEW)).Methods("GET")
-	r.Handle("/api/user/{id}", api.AuthMiddleware(api.updateUserHandler(), acl.PROJECT_VIEW)).Methods("POST")
+	r.Handle("/api/user/{id}", api.AuthMiddleware(api.updateUserHandler(), acl.VIEW, acl.PROJECT_VIEW)).Methods("POST")
 	r.Handle("/api/user/{id}", api.AuthMiddleware(api.deteleUserHandler(), acl.PROJECT_VIEW)).Methods("DELETE")
 
 	r.Handle("/api/project/{id}/role", api.AuthMiddleware(api.addRoleToProject(), acl.CREATE_PROJECT)).Methods("PUT")
