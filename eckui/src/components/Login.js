@@ -10,6 +10,7 @@ import {
   EuiFieldPassword,
   EuiFormRow,
   EuiSpacer,
+  EuiForm,
   EuiPage,
   EuiPageBody,
   EuiPageContent,
@@ -19,7 +20,6 @@ import {
 import eckApi from "../store";
 import { withRouter } from "react-router-dom"
 import InnerBgImg from "../img/background.jpg";
-import { Auth } from "../App";
 
 const style = {
   width: "100%",
@@ -72,6 +72,7 @@ class LoginForm extends Component {
   render = () => {
   return (
     <Fragment>
+       <EuiForm onKeyUp={(e) =>{ if (e.keyCode === 13){e.preventDefault(); this.submitForm()} } }>
       <EuiFlexGroup>
         <EuiFlexItem>
           <EuiFieldText
@@ -107,11 +108,12 @@ class LoginForm extends Component {
           style={{ minWidth: 300 }}
           onClick={() => this.props.switch()}
         >
-          <EuiButton type="submit" fill color="secondary">
+          <EuiButton type="cancel" fill color="secondary">
             Register
           </EuiButton>
         </EuiFlexItem>
       </EuiFlexGroup>
+      </EuiForm>
     </Fragment>
   );
 }

@@ -161,7 +161,7 @@ class DeploymentForm extends Component {
     eckApi.createDeployments(this.props.match.params.id, deployment).then((response) => {
      
         console.log(response.data)
-        this.props.history.push("/project/"+this.props.match.params.id+"/"+deployment.name);
+        this.props.history.push("/projects/"+this.props.match.params.id+"/"+deployment.name);
       
     })
     .catch(function (error) {
@@ -172,6 +172,11 @@ class DeploymentForm extends Component {
 
 
   render() {
+    let saveButtonText = "Save Form"
+    if (this.props.match.params.depoyment_id){
+      saveButtonText = "Update Form"
+    }
+
     return (
         <EuiPageContent>
             <EuiPageContentHeader>
@@ -225,7 +230,7 @@ class DeploymentForm extends Component {
 <EuiSpacer />
 <EuiFlexGroup justifyContent="spaceBetween">
       <EuiFlexItem grow={false}>
-        <EuiButton type="submit" fill onClick={this.onFormSave}> Save form </EuiButton>
+    <EuiButton type="submit" fill onClick={this.onFormSave}>{saveButtonText}</EuiButton>
       </EuiFlexItem>
       <EuiFlexItem grow={false}>
         <EuiButton type="clear" color="danger" onClick={this.clearForm} >  Reset form </EuiButton>

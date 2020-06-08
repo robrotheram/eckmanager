@@ -95,11 +95,12 @@ class EventsView extends Component {
       buttonClassName="euiAccordionForm__button"
       buttonContent={buttonContent(this.props.title)}
       >
-      <div style={{"max-height": "300px", "overflow": "auto"}}>
+      <div style={{"maxHeight": "300px", "overflow": "auto"}}>
                 
                 { this.state.events.map((item, index) => {
                   return (
                     <EuiCallOut
+                    key={index}
                     title={item.component}
                     iconType={item.type === "Normal" ? "check" : "alert"}
                     color={item.type === "Normal" ? "success" : "warning"}

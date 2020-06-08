@@ -87,9 +87,10 @@ export default class extends Component {
                 <EuiFlexGroup>
                   <EuiFlexItem>
                     <EuiFlexGroup justifyContent="spaceBetween">
-                      {/* <EuiFlexItem grow={false}>
-                        <EuiLink href="">Edit profile</EuiLink>
-                      </EuiFlexItem> */}
+
+                      <EuiFlexItem grow={false}>
+                        <EuiLink onClick={() => this.props.history.push("/profile")}>Edit profile</EuiLink>
+                      </EuiFlexItem>
   
                       <EuiFlexItem grow={false}>
                         <EuiLink href="" onClick={() => Auth.signout()}>Log out</EuiLink>

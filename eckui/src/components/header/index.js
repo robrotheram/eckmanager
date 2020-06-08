@@ -52,10 +52,10 @@ const Header =  (props) => {
 
       <EuiHeaderSection side="right">
       <EuiHeaderSectionItem>
-      <EuiHeaderLink iconType="gear" onClick={() =>  props.history.push("/settings")}></EuiHeaderLink>
-        <HeaderUserMenu />
-        
+      {Auth.hasProjectAdmin() && <EuiHeaderLink iconType="gear" onClick={() =>  props.history.push("/settings")}></EuiHeaderLink>}
+        <HeaderUserMenu history={props.history}/>
        </EuiHeaderSectionItem>
+     
       </EuiHeaderSection>
     </EuiHeader>
   );

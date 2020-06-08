@@ -254,6 +254,11 @@ class ProjectForm extends Component {
       </EuiForm>
     );
 
+    let saveButtonText = "Save Project"
+    if (this.props.match.params.id){
+      saveButtonText = "Update Project"
+    }
+
      return (
       <EuiPageContent>
         <EuiPageContentHeader>
@@ -340,7 +345,7 @@ class ProjectForm extends Component {
             <EuiFlexGroup justifyContent="spaceBetween">
               <EuiFlexItem grow={false}>
                 <EuiButton type="submit" fill onClick={this.onFormSave}>
-                  Create Project
+                  {saveButtonText}
                 </EuiButton>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>

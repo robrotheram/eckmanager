@@ -6,6 +6,10 @@ import {
     EuiBasicTable,
     EuiModal,
     EuiModalHeaderTitle,
+    EuiFlexGroup,
+    EuiCopy,
+    EuiButtonIcon,
+    EuiFlexItem,
   EuiModalHeader,
   EuiModalBody,
   EuiButton,
@@ -14,12 +18,20 @@ import {
   EuiFormRow,
   EuiForm,
   EuiFieldText,
-  EuiText,
-  EuiLink,
   EuiSelect
 } from '@elastic/eui';
 import eckApi from "../../store";
 import moment from 'moment'
+
+function generatePassword (length) {
+	var password = '', character; 
+	while (length > password.length) {
+		if (password.indexOf(character = String.fromCharCode(Math.floor(Math.random() * 94) + 33), Math.floor(password.length / 94) * 94) < 0) {
+			password += character;
+		}
+	}
+	return password;
+}
 
 class Users extends Component {
     constructor(props) {
@@ -93,6 +105,17 @@ class Users extends Component {
         user: user
       });
     }
+
+    onUserNewPassword = () =>{
+      let user = this.state.user
+      user["password"] =  generatePassword(20)
+
+      console.log(user)
+      this.setState({
+        user: user
+      });
+
+    }
     
 
     render() {
@@ -144,8 +167,42 @@ class Users extends Component {
           ]}
         />
       </EuiFormRow>
+      <EuiFormRow fullWidth>
+
+      <EuiFlexGroup>
+      <EuiFlexItem grow={false}>
+        <EuiFormRow display="center">
+        <EuiButton onClick={this.onUserNewPassword} fill>
+                  Reset Password
+                </EuiButton>
+        </EuiFormRow>
+      </EuiFlexItem>
+      {(this.state.user.password !== undefined && this.state.user.password !== "") && 
+      <EuiFlexItem>
+        <EuiFormRow fullWidth>
+          <EuiFieldText placeholder="password"  name="password" value={this.state.user.password}  fullWidth aria-label="password" disabled />
+        </EuiFormRow>
+       </EuiFlexItem>
+      }
+      {(this.state.user.password !== undefined && this.state.user.password !== "") && 
+       <EuiFlexItem grow={false}>
+        <EuiFormRow fullWidth>
+        <EuiCopy textToCopy={this.state.user.password}>
+        {copy => <EuiButtonIcon iconType="copy" onClick={copy} style={{"marginTop":"10px"}}/>}
+      </EuiCopy>
+        </EuiFormRow>
+       </EuiFlexItem>
+     
+      }
+
+    </EuiFlexGroup>
+
+    </EuiFormRow>
+
                 </EuiForm>  
               </EuiModalBody>
+
+              
 
               <EuiModalFooter>
                 <EuiButtonEmpty onClick={this.closeModal}>Cancel</EuiButtonEmpty>

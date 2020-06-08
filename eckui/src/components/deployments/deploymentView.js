@@ -258,7 +258,7 @@ class DeploymentView extends Component {
       this.props.match.params.depoyment_id
     ).then(() => {
       this.props.history.push(
-        "/project/" + this.props.match.params.id
+        "/projects/" + this.props.match.params.id
       )
     });
   }
@@ -278,9 +278,12 @@ class DeploymentView extends Component {
 
 
   render() {
-    let deployment = this.state.deployment;
-    console.log(deployment)
+    console.log(this.props.match.params)
+    if (this.props.match.params.depoyment_id === "edit" || this.props.match.params.depoyment_id ==="create"){
+      return null
+    }
 
+    let deployment = this.state.deployment;
     let secrets = []
     if (this.state.secrets[0] !== undefined){
       secrets = Object.values(this.state.secrets[0])[0];
@@ -293,15 +296,13 @@ class DeploymentView extends Component {
         break
       }
     }
-      
     
-
-
+    
 
     return (
       <EuiPageContent>
         <EuiPageContentHeader>
-          <EuiFlexGroup fullWidth justifyContent="spaceBetween">
+          <EuiFlexGroup justifyContent="spaceBetween">
             <EuiFlexItem grow={false}>
               <EuiPageContentHeaderSection>
                 <EuiTitle>
@@ -313,13 +314,13 @@ class DeploymentView extends Component {
               </EuiPageContentHeaderSection>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-                          <EuiFlexGroup fullWidth justifyContent="spaceBetween">
+                          <EuiFlexGroup justifyContent="spaceBetween">
                           <EuiFlexItem grow={false}>
               <EuiButton
                 fill
                 onClick={() =>
                   this.props.history.push(
-                    "/project/" + this.props.match.params.id + "/"+deployment.name+"/edit"
+                    "/projects/" + this.props.match.params.id + "/"+deployment.name+"/edit"
                   )
                 }
               >
@@ -377,6 +378,7 @@ class DeploymentView extends Component {
             buttonClassName="euiAccordionForm__button"
             buttonContent={buttonContent("logoElasticsearch", "Elasticsearch")}
             paddingSize="l"
+            id="ElasticsearchAccordian"
           >
             <EuiFlexGrid gutterSize="l" columns={4}>
               {this.state.elasticsearch.pods.map((item, index) => {
@@ -394,6 +396,7 @@ class DeploymentView extends Component {
             buttonClassName="euiAccordionForm__button"
             buttonContent={buttonContent("logoKibana", "Kibana")}
             paddingSize="l"
+            id="kibanaAccordian"
           >
             <EuiFlexGrid gutterSize="l" columns={4}>
               {this.state.kibana.pods.map((item, index) => {

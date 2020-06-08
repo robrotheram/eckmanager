@@ -1,5 +1,3 @@
-import { hexToHsv } from "@elastic/eui"
-
 class Auth {
     user = {
         username: "",
@@ -7,8 +5,6 @@ class Auth {
     cb = {}
 
     perms = {}
-    constructor(){}
-
 
     setPermissions = (data) => {
         console.log("PERM",data)
@@ -19,7 +15,13 @@ class Auth {
         this.cb[id] = (cbf)
     }
     removeCallback = (id) => {
-        this.cb.delete(id);
+        let cb = this.cb
+        if (this.cb !== undefined ){
+            console.log(cb)
+            delete cb[id];
+            this.cb = cb
+        }
+        
     }
 
     callAllCallbacks = () => {
@@ -55,6 +57,9 @@ class Auth {
 
     
     hasProjectPermission = (project, action) => {
+        if (this.hasProjectAdmin){
+            return true;
+        }
         if (this.perms[project] === undefined) {
             return false
         }

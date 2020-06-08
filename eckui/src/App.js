@@ -2,7 +2,8 @@ import React, {Component}from "react";
 import {
   BrowserRouter as Router,
   Route,
-  Redirect
+  Redirect,
+  
 } from "react-router-dom";
 
 import {
@@ -12,20 +13,13 @@ import {
 import Header from './components/header';
 import {Deployments, DeploymentForm, DeploymentView} from './components/deployments';
 import {ProjectList, ProjectForm} from './components/projects';
-
+import UserProfile from './components/profile'
 
 import Login from "./components/Login";
 import eckAPI, {Notifications, Auth} from "./store";
 import Settings from "./components/settings";
 
 function PrivateRoute({ children, ...rest }) {
-  // async function asyncCall() {
-  //   eckAPI.getUser().then().catch(function (error) {
-  //     Auth.signout();
-  //   });
-  // }
-
-  // if(Auth.isAuthenticated()){asyncCall()}
   return (
     <Route
       {...rest}
@@ -95,23 +89,23 @@ export default class extends Component {
         <Header/> 
         <EuiPage className="euiNavDrawerPage">
                   
-                  <PrivateRoute path="/project/:id" exact><Deployments/></PrivateRoute>
+                  <PrivateRoute path="/projects/:id" exact><Deployments/></PrivateRoute>
                   <PrivateRoute path="/projects/create" exact><ProjectForm/></PrivateRoute>
 
                  
-                  <PrivateRoute path="/projects/:id/create" ><DeploymentForm/></PrivateRoute>
-                  <PrivateRoute path="/projects/:id/edit" ><ProjectForm/></PrivateRoute>
+                  <PrivateRoute path="/projects/:id/create" exact ><DeploymentForm/></PrivateRoute>
+                  <PrivateRoute path="/projects/:id/edit" exact ><ProjectForm/></PrivateRoute>
                   
-                  <PrivateRoute path="/project/:id/:depoyment_id" exact><DeploymentView/></PrivateRoute>  
+                   <PrivateRoute path="/projects/:id/:depoyment_id"exact><DeploymentView/></PrivateRoute>   
+                  <PrivateRoute path="/projects/:id/:depoyment_id/edit" exact><DeploymentForm/></PrivateRoute>
 
-                  <PrivateRoute path="/project/:id/:depoyment_id/edit" ><DeploymentForm/></PrivateRoute>
-                  
-                  <Route path="/login" exact><Login/></Route>
-                  <PrivateRoute path="/project" exact><ProjectList/></PrivateRoute>
+                  <PrivateRoute path="/projects" exact><ProjectList/></PrivateRoute>
                   <PrivateRoute path="/settings" exact><Settings/></PrivateRoute>
-                  <Route path="/projects" exact>
-                    <Redirect to={{pathname: "/project" }} />
-                  </Route>
+                  <PrivateRoute path="/profile" exact><UserProfile/></PrivateRoute>
+
+                  <Route path="/login" exact><Login/></Route>
+                  
+                  
                   <Route path="/" exact>
                     <Redirect to={{pathname: "/projects" }} />
                   </Route>

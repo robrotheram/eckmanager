@@ -97,7 +97,7 @@ class Projects extends Component {
                             title={item.Name}
                             
                             description={item.Description}
-                            onClick={() =>  this.props.history.push("/project/"+item.Id)}
+                            onClick={() =>  this.props.history.push("/projects/"+item.Id)}
                           />
                         </EuiFlexItem>
                       );

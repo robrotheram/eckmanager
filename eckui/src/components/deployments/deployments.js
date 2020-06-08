@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import {
-  EuiFieldSearch,
   EuiPageContent,
   EuiPageContentHeader,
   EuiPageContentHeaderSection,
@@ -113,6 +112,7 @@ class Deployments extends Component {
     }
   
     componentDidMount() {
+      console.log(this.props.match)
       if (this.props.match.params.id !== undefined){
         console.log(this.props.match.params)
         eckApi.getDeployments(this.props.match.params.id).then((response) => {
@@ -278,18 +278,18 @@ class Deployments extends Component {
 
 
 
-                  <EuiFieldSearch
+                  {/* <EuiFieldSearch
                     placeholder="Search this"
                     value={this.state.value}
                     onChange={this.onChange}
                     fullWidth={true}
                     aria-label="Use aria labels when no actual label is in use"
-                  />
+                  /> */}
                  <EuiSpacer size="m" />
                     <EuiFlexGrid gutterSize="l" columns={4}>
                     { this.state.deployments.map((item, index) => {
                       return (
-                        <EuiFlexItem key={index} onClick={() =>  this.props.history.push("/project/"+this.props.match.params.id+"/"+item.name)}>
+                        <EuiFlexItem key={index} onClick={() =>  this.props.history.push("/projects/"+this.props.match.params.id+"/"+item.name)}>
                           <DeploymentCard item={item} project={this.props.match.params.id}/>
                         </EuiFlexItem>
                       );

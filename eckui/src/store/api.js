@@ -1,6 +1,5 @@
 
 import axios from 'axios';
-import { hexToHsv } from '@elastic/eui';
 
 export default class eckAPI {
 
