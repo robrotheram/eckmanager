@@ -1,0 +1,22 @@
+xpack:
+  security:
+    authc:
+      realms:
+        ldap:
+          ldap1:
+            order: 0
+            secure_bind_password: xpack.security.authc.realms.ldap.ldap1.secure_bind_password
+            url: "ldap://192.168.0.64"
+            bind_dn: "cn=admin,dc=exceptionerror,dc=io"
+            metadata: [cn, sn, postalCode]
+            user_search:
+              base_dn: "cn=Users,dc=exceptionerror,dc=io"
+              filter: "(cn={0})"
+            group_search:
+              base_dn: "dc=exceptionerror,dc=io"
+              user_attribute: "uid"
+              filter: "memberUid={0}"
+            unmapped_groups_as_roles: false
+        native:
+          native1:
+            order: 1
