@@ -12,10 +12,10 @@ It also requires an Elastic enterprise licence to use after the 30 trial period.
  
 ## Build
 Requires:
-Go: 1.13+
-Yarn: 1.22.0 +
-NPM: 6.13 +
-Make
+* Go: 1.13+
+* Yarn: 1.22.0 +
+* NPM: 6.13 +
+* Make
  
 This Project uses Make as a helpful wrapper around the different build systems for the frontend and backend
  
