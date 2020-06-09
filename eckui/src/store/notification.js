@@ -1,27 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import {
-  EuiGlobalToastList,
-} from '@elastic/eui';
+import { EuiGlobalToastList } from "@elastic/eui";
 
 let addToastHandler;
 let removeAllToastsHandler;
 
-
-export function Warning(title, message){
-  addToast("warning", title, message)
+export function Warning(title, message) {
+  addToast("warning", title, message);
 }
-export function Danger(title, message){
-  addToast("danger", title, message)
+export function Danger(title, message) {
+  addToast("danger", title, message);
 }
-export function Success(title, message){
-  addToast("success", title, message)
-}
-
-export function Info(title, message){
-  addToast("info", title, message)
+export function Success(title, message) {
+  addToast("success", title, message);
 }
 
+export function Info(title, message) {
+  addToast("info", title, message);
+}
 
 function addToast(type, title, message) {
   addToastHandler({
@@ -42,8 +38,8 @@ export default () => {
     setToasts(toasts.concat(toast));
   };
 
-  const removeToast = removedToast => {
-    setToasts(toasts.filter(toast => toast.id !== removedToast.id));
+  const removeToast = (removedToast) => {
+    setToasts(toasts.filter((toast) => toast.id !== removedToast.id));
   };
 
   removeAllToastsHandler = () => {
@@ -52,7 +48,7 @@ export default () => {
 
   return (
     <EuiGlobalToastList
-      style={{bottom: "auto", top:"55px", width:"600px"}}
+      style={{ bottom: "auto", top: "55px", width: "600px" }}
       toasts={toasts}
       dismissToast={removeToast}
       toastLifeTimeMs={6000}

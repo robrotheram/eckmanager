@@ -20,22 +20,21 @@ import {
   EuiCodeBlock,
   EuiAccordion,
   EuiTextColor,
-  EuiButtonEmpty
+  EuiButtonEmpty,
 } from "@elastic/eui";
 import eckApi from "../../store";
 import { EuiHorizontalRule } from "@elastic/eui";
-import { withRouter } from "react-router-dom"
-import EventsView from './../events'
+import { withRouter } from "react-router-dom";
+import EventsView from "./../events";
 
-const cardStatusStyle =  {
-  "position": "relative",
-  "padding": "2px",
-  "border": "1px solid #D3DAE6",
-  "borderRadius": "5px",
-  "marginRight": "10px",
-  "display":"inline"
-
-}
+const cardStatusStyle = {
+  position: "relative",
+  padding: "2px",
+  border: "1px solid #D3DAE6",
+  borderRadius: "5px",
+  marginRight: "10px",
+  display: "inline",
+};
 
 class DevelopmentCard extends Component {
   constructor(props) {
@@ -50,21 +49,27 @@ class DevelopmentCard extends Component {
   componentDidMount() {}
 
   render() {
-    let name, es_version = ""
-    let cpu, memory = 0
-    let icon = `logoElasticsearch`
-    if (this.props.node !== undefined){
-      name = this.props.node.name
-      icon = this.props.icon
-      es_version = this.props.node.es_version
-      if (this.props.node.metrics[0] !== undefined){
-      if (this.props.node.metrics[0].Metrics[0] !== undefined){
-      cpu = (this.props.node.metrics[0].Metrics[0].Metrics[0].CPU/2)*100
-      memory = ((this.props.node.metrics[0].Metrics[0].Metrics[0].Memory / (1024*1024*1024))/2)*100
+    let name,
+      es_version = "";
+    let cpu,
+      memory = 0;
+    let icon = `logoElasticsearch`;
+    if (this.props.node !== undefined) {
+      name = this.props.node.name;
+      icon = this.props.icon;
+      es_version = this.props.node.es_version;
+      if (this.props.node.metrics[0] !== undefined) {
+        if (this.props.node.metrics[0].Metrics[0] !== undefined) {
+          cpu =
+            (this.props.node.metrics[0].Metrics[0].Metrics[0].CPU / 2) * 100;
+          memory =
+            (this.props.node.metrics[0].Metrics[0].Metrics[0].Memory /
+              (1024 * 1024 * 1024) /
+              2) *
+            100;
+        }
       }
     }
-    }
-    
 
     return (
       <EuiCard
@@ -137,14 +142,14 @@ class DeploymentView extends Component {
 
     this.state = {
       projects: [{}, {}, {}, {}, {}, {}, {}],
-      status : {},
+      status: {},
       elasticsearch: {
-        status:{},
-        pods: []
+        status: {},
+        pods: [],
       },
       kibana: {
-        status:{},
-        pods: []
+        status: {},
+        pods: [],
       },
 
       secrets: [],
@@ -152,7 +157,7 @@ class DeploymentView extends Component {
         DeploymentName: "",
         Version: "",
         elasticsearch: {},
-        kibana: {}
+        kibana: {},
       },
     };
   }
@@ -172,52 +177,56 @@ class DeploymentView extends Component {
           console.log(error);
         });
 
-        eckApi.getDeploymentSecrets(
+      eckApi
+        .getDeploymentSecrets(
           this.props.match.params.id,
           this.props.match.params.depoyment_id
-        ).then((response) => {
-          console.log(response.data)
+        )
+        .then((response) => {
+          console.log(response.data);
           this.setState({ secrets: response.data });
-        })
+        });
 
-        eckApi.getDeploymentElastic(
+      eckApi
+        .getDeploymentElastic(
           this.props.match.params.id,
           this.props.match.params.depoyment_id
-        ).then((response) => {
-          console.log(response.data)
+        )
+        .then((response) => {
+          console.log(response.data);
           let elasticsearch = {
-            status:response.data.status,
-            pods: response.data.pods
-          }
-          this.setState({ elasticsearch: elasticsearch});
-        })
+            status: response.data.status,
+            pods: response.data.pods,
+          };
+          this.setState({ elasticsearch: elasticsearch });
+        });
 
-        eckApi.getDeploymentKibana(
+      eckApi
+        .getDeploymentKibana(
           this.props.match.params.id,
           this.props.match.params.depoyment_id
-        ).then((response) => {
-          console.log(response.data)
+        )
+        .then((response) => {
+          console.log(response.data);
           let kibana = {
-            status:response.data.status,
-            pods: response.data.pods
-          }
-          this.setState({ kibana: kibana});
-        })
+            status: response.data.status,
+            pods: response.data.pods,
+          };
+          this.setState({ kibana: kibana });
+        });
 
-        eckApi.getDeploymentStatus(
+      eckApi
+        .getDeploymentStatus(
           this.props.match.params.id,
           this.props.match.params.depoyment_id
-        ).then((response) => {
-  
-          console.log(response.data)
-          this.setState({status: response.data})
-  
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-
-  
+        )
+        .then((response) => {
+          console.log(response.data);
+          this.setState({ status: response.data });
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
   }
 
@@ -234,36 +243,36 @@ class DeploymentView extends Component {
   };
 
   regenSecrets = () => {
-    eckApi.deleteDeploymentSecrets(
-      this.props.match.params.id,
-      this.props.match.params.depoyment_id
-    ).then(() => {
-      setTimeout(() => {
-        eckApi.getDeploymentSecrets(
-          this.props.match.params.id,
-          this.props.match.params.depoyment_id
-        ).then((response) => {
-          console.log(response.data)
-          this.setState({ secrets: response.data });
-        })
-      }, 2000);
-      
-    })
-  }
-
+    eckApi
+      .deleteDeploymentSecrets(
+        this.props.match.params.id,
+        this.props.match.params.depoyment_id
+      )
+      .then(() => {
+        setTimeout(() => {
+          eckApi
+            .getDeploymentSecrets(
+              this.props.match.params.id,
+              this.props.match.params.depoyment_id
+            )
+            .then((response) => {
+              console.log(response.data);
+              this.setState({ secrets: response.data });
+            });
+        }, 2000);
+      });
+  };
 
   deleteDeployment = () => {
-    eckApi.deleteDeployment(
-      this.props.match.params.id,
-      this.props.match.params.depoyment_id
-    ).then(() => {
-      this.props.history.push(
-        "/projects/" + this.props.match.params.id
+    eckApi
+      .deleteDeployment(
+        this.props.match.params.id,
+        this.props.match.params.depoyment_id
       )
-    });
-  }
-
-
+      .then(() => {
+        this.props.history.push("/projects/" + this.props.match.params.id);
+      });
+  };
 
   createItem = (name, data = {}) => {
     // NOTE: Duplicate `name` values will cause `id` collisions.
@@ -276,28 +285,28 @@ class DeploymentView extends Component {
     };
   };
 
-
   render() {
-    console.log(this.props.match.params)
-    if (this.props.match.params.depoyment_id === "edit" || this.props.match.params.depoyment_id ==="create"){
-      return null
+    console.log(this.props.match.params);
+    if (
+      this.props.match.params.depoyment_id === "edit" ||
+      this.props.match.params.depoyment_id === "create"
+    ) {
+      return null;
     }
 
     let deployment = this.state.deployment;
-    let secrets = []
-    if (this.state.secrets[0] !== undefined){
+    let secrets = [];
+    if (this.state.secrets[0] !== undefined) {
       secrets = Object.values(this.state.secrets[0])[0];
     }
-    let status = "green"
+    let status = "green";
     for (let element of Object.values(this.state.status)) {
-      const result = element.filter(node => node.health !== "green");
+      const result = element.filter((node) => node.health !== "green");
       if (result.length > 0) {
         status = result[0].health;
-        break
+        break;
       }
     }
-    
-    
 
     return (
       <EuiPageContent>
@@ -306,37 +315,50 @@ class DeploymentView extends Component {
             <EuiFlexItem grow={false}>
               <EuiPageContentHeaderSection>
                 <EuiTitle>
-                <span><div style={cardStatusStyle} >{status==="green"? <EuiIcon type="check" size="xl" color="success"/> : <EuiIcon type="alert" size="xl" color="warning"/>}</div>{deployment.name}</span>
+                  <span>
+                    <div style={cardStatusStyle}>
+                      {status === "green" ? (
+                        <EuiIcon type="check" size="xl" color="success" />
+                      ) : (
+                        <EuiIcon type="alert" size="xl" color="warning" />
+                      )}
+                    </div>
+                    {deployment.name}
+                  </span>
                 </EuiTitle>
-                
+
                 <p style={{ paddingTop: "5px" }}>{deployment.version}</p>
-                
               </EuiPageContentHeaderSection>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-                          <EuiFlexGroup justifyContent="spaceBetween">
-                          <EuiFlexItem grow={false}>
-              <EuiButton
-                fill
-                onClick={() =>
-                  this.props.history.push(
-                    "/projects/" + this.props.match.params.id + "/"+deployment.name+"/edit"
-                  )
-                }
-              >
-                Edit Deployment
-              </EuiButton>
+              <EuiFlexGroup justifyContent="spaceBetween">
+                <EuiFlexItem grow={false}>
+                  <EuiButton
+                    fill
+                    onClick={() =>
+                      this.props.history.push(
+                        "/projects/" +
+                          this.props.match.params.id +
+                          "/" +
+                          deployment.name +
+                          "/edit"
+                      )
+                    }
+                  >
+                    Edit Deployment
+                  </EuiButton>
+                </EuiFlexItem>
+                <EuiFlexItem grow={false}>
+                  <EuiButton
+                    fill
+                    color="danger"
+                    onClick={this.deleteDeployment}
+                  >
+                    Delete Deployment
+                  </EuiButton>
+                </EuiFlexItem>
+              </EuiFlexGroup>
             </EuiFlexItem>
-            <EuiFlexItem grow={false}>
-              <EuiButton
-                fill
-                color="danger"
-                onClick={this.deleteDeployment}
-              >
-                Delete Deployment
-              </EuiButton></EuiFlexItem>
-                          </EuiFlexGroup>
-                        </EuiFlexItem>
           </EuiFlexGroup>
         </EuiPageContentHeader>
         <EuiHorizontalRule />
@@ -345,14 +367,24 @@ class DeploymentView extends Component {
             <EuiFlexItem>
               <EuiPanel>
                 <EuiFieldText
-                  value={"https://"+deployment.elasticsearch.Id+"."+deployment.base_url}
+                  value={
+                    "https://" +
+                    deployment.elasticsearch.Id +
+                    "." +
+                    deployment.base_url
+                  }
                   prepend={[<EuiIcon type="logoElasticsearch" />]}
                   readOnly={true}
                   fullWidth
                 />
                 <EuiSpacer size="s" />
                 <EuiFieldText
-                  value={"https://"+deployment.kibana.Id+"."+deployment.base_url}
+                  value={
+                    "https://" +
+                    deployment.kibana.Id +
+                    "." +
+                    deployment.base_url
+                  }
                   prepend={[<EuiIcon type="logoKibana" />]}
                   readOnly={true}
                   fullWidth
@@ -363,11 +395,18 @@ class DeploymentView extends Component {
             <EuiFlexItem>
               <EuiPanel>
                 Elastic Secrets
-                <EuiButtonEmpty  style={{float:"right"}} iconSide="left" iconType="refresh" onClick={this.regenSecrets} color="danger"> Regenerate Secrets </EuiButtonEmpty>
+                <EuiButtonEmpty
+                  style={{ float: "right" }}
+                  iconSide="left"
+                  iconType="refresh"
+                  onClick={this.regenSecrets}
+                  color="danger"
+                >
+                  {" "}
+                  Regenerate Secrets{" "}
+                </EuiButtonEmpty>
                 <EuiSpacer />
-                <EuiCodeBlock language="json">
-                { (secrets)}
-                </EuiCodeBlock>
+                <EuiCodeBlock language="json">{secrets}</EuiCodeBlock>
               </EuiPanel>
             </EuiFlexItem>
           </EuiFlexGroup>
@@ -384,7 +423,7 @@ class DeploymentView extends Component {
               {this.state.elasticsearch.pods.map((item, index) => {
                 return (
                   <EuiFlexItem key={index}>
-                    <DevelopmentCard  node={item} icon={"logoElasticsearch"}/>
+                    <DevelopmentCard node={item} icon={"logoElasticsearch"} />
                   </EuiFlexItem>
                 );
               })}
@@ -402,20 +441,22 @@ class DeploymentView extends Component {
               {this.state.kibana.pods.map((item, index) => {
                 return (
                   <EuiFlexItem key={index}>
-                    <DevelopmentCard node={item} icon={"logoKibana"}/>
+                    <DevelopmentCard node={item} icon={"logoKibana"} />
                   </EuiFlexItem>
                 );
               })}
             </EuiFlexGrid>
           </EuiAccordion>
 
-          <EventsView project={this.props.match.params.id} deployment={this.props.match.params.depoyment_id} title="Deployments Events"/>
-
+          <EventsView
+            project={this.props.match.params.id}
+            deployment={this.props.match.params.depoyment_id}
+            title="Deployments Events"
+          />
         </EuiPageContentBody>
       </EuiPageContent>
     );
   }
 }
 
-export default (withRouter(DeploymentView));
-
+export default withRouter(DeploymentView);

@@ -1,42 +1,35 @@
-import React from 'react';
+import React from "react";
 
 import {
-   
-   EuiTitle,
-
+  EuiTitle,
   EuiFlexGroup,
   EuiFlexItem,
-  
   EuiIcon,
   EuiText,
   EuiTextColor,
-  
+} from "@elastic/eui";
 
-} from '@elastic/eui';
-
-
-const AccordinanIconButton = (title, icon) => { 
+const AccordinanIconButton = (title, icon) => {
   return (
-  <div>
-    <EuiFlexGroup gutterSize="s" alignItems="center" responsive={false}>
-      <EuiFlexItem grow={false}>
-        <EuiIcon type={icon} size="m" />
-      </EuiFlexItem>
+    <div>
+      <EuiFlexGroup gutterSize="s" alignItems="center" responsive={false}>
+        <EuiFlexItem grow={false}>
+          <EuiIcon type={icon} size="m" />
+        </EuiFlexItem>
 
-      <EuiFlexItem>
-        <EuiTitle size="s" className="euiAccordionForm__title">
+        <EuiFlexItem>
+          <EuiTitle size="s" className="euiAccordionForm__title">
             <h6>{title}</h6>
-        </EuiTitle>
-      </EuiFlexItem>
-    </EuiFlexGroup>
+          </EuiTitle>
+        </EuiFlexItem>
+      </EuiFlexGroup>
 
-    <EuiText size="s">
-      <p>
-        <EuiTextColor color="subdued">
-            Setup {title} 
-        </EuiTextColor>
-      </p>
-    </EuiText>
-  </div>
-)}
-export default AccordinanIconButton
+      <EuiText size="s">
+        <p>
+          <EuiTextColor color="subdued">Setup {title}</EuiTextColor>
+        </p>
+      </EuiText>
+    </div>
+  );
+};
+export default AccordinanIconButton;

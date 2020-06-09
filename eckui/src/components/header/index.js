@@ -1,9 +1,9 @@
-import React from 'react';
-import useBreadcrumbs from 'use-react-router-breadcrumbs';
+import React from "react";
+import useBreadcrumbs from "use-react-router-breadcrumbs";
 
-import HeaderUserMenu from "./headerUserProfile"
-import { withRouter } from "react-router-dom"
-import { Auth } from "../../store"
+import HeaderUserMenu from "./headerUserProfile";
+import { withRouter } from "react-router-dom";
+import { Auth } from "../../store";
 
 import {
   EuiHeader,
@@ -12,52 +12,55 @@ import {
   EuiHeaderSectionItem,
   EuiHeaderLogo,
   EuiHeaderLink,
-} from '@elastic/eui';
+} from "@elastic/eui";
 
-const Header =  (props) => {
-
+const Header = (props) => {
   const renderBreadcrumbs = (history, breadcrumbs) => {
-      console.log(breadcrumbs)
-      breadcrumbs = breadcrumbs.map(({ breadcrumb }) => {
-        return {
-          text: breadcrumb.props.children,
-          onClick: e => {
-            e.preventDefault();
-            history.push(breadcrumb.key)
-          },
-        }
-      })
+    console.log(breadcrumbs);
+    breadcrumbs = breadcrumbs.map(({ breadcrumb }) => {
+      return {
+        text: breadcrumb.props.children,
+        onClick: (e) => {
+          e.preventDefault();
+          history.push(breadcrumb.key);
+        },
+      };
+    });
 
-      console.log(breadcrumbs)
+    console.log(breadcrumbs);
 
     return <EuiHeaderBreadcrumbs breadcrumbs={breadcrumbs} />;
   };
 
   let breadcrumbs = useBreadcrumbs();
-  if (!Auth.isAuthenticated()){
-            return null
-          }
+  if (!Auth.isAuthenticated()) {
+    return null;
+  }
   return (
     <EuiHeader>
       <EuiHeaderSection grow={false}>
         <EuiHeaderSectionItem border="right">
-          <EuiHeaderLogo iconType={"logoCode"} href="#">ECK Manager</EuiHeaderLogo>
+          <EuiHeaderLogo iconType={"logoCode"} href="#">
+            ECK Manager
+          </EuiHeaderLogo>
         </EuiHeaderSectionItem>
-        <EuiHeaderSectionItem border="right">
-          
-        </EuiHeaderSectionItem>
+        <EuiHeaderSectionItem border="right"></EuiHeaderSectionItem>
       </EuiHeaderSection>
 
       {renderBreadcrumbs(props.history, breadcrumbs)}
 
       <EuiHeaderSection side="right">
-      <EuiHeaderSectionItem>
-      {Auth.hasProjectAdmin() && <EuiHeaderLink iconType="gear" onClick={() =>  props.history.push("/settings")}></EuiHeaderLink>}
-        <HeaderUserMenu history={props.history}/>
-       </EuiHeaderSectionItem>
-     
+        <EuiHeaderSectionItem>
+          {Auth.hasProjectAdmin() && (
+            <EuiHeaderLink
+              iconType="gear"
+              onClick={() => props.history.push("/settings")}
+            ></EuiHeaderLink>
+          )}
+          <HeaderUserMenu history={props.history} />
+        </EuiHeaderSectionItem>
       </EuiHeaderSection>
     </EuiHeader>
   );
 };
-export default withRouter(Header)
+export default withRouter(Header);

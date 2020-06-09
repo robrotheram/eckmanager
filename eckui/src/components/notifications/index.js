@@ -1,11 +1,6 @@
+import React, { useState, Fragment } from "react";
 
-import React, { useState, Fragment } from 'react';
-
-import {
-  EuiCode,
-  EuiGlobalToastList,
-  EuiLink,
-} from '@elastic/eui';
+import { EuiCode, EuiGlobalToastList, EuiLink } from "@elastic/eui";
 
 let addToastHandler;
 let removeAllToastsHandler;
@@ -27,8 +22,8 @@ export default () => {
     setToasts(toasts.concat(toast));
   };
 
-  const removeToast = removedToast => {
-    setToasts(toasts.filter(toast => toast.id !== removedToast.id));
+  const removeToast = (removedToast) => {
+    setToasts(toasts.filter((toast) => toast.id !== removedToast.id));
   };
 
   removeAllToastsHandler = () => {
@@ -48,21 +43,21 @@ export default () => {
               that&rsquo;s fairly narrow, it will wrap, too.
             </p>
             <p>
-              And some other stuff on another line, just for kicks. And{' '}
+              And some other stuff on another line, just for kicks. And{" "}
               <EuiLink href="#">here&rsquo;s a link</EuiLink>.
             </p>
           </Fragment>
         ),
       },
       {
-        title: 'Download complete!',
-        color: 'success',
+        title: "Download complete!",
+        color: "success",
         text: <p>Thanks for your patience!</p>,
       },
       {
-        title: 'Logging you out soon, due to inactivity',
-        color: 'warning',
-        iconType: 'user',
+        title: "Logging you out soon, due to inactivity",
+        color: "warning",
+        iconType: "user",
         text: (
           <Fragment>
             <p>This is a security measure.</p>
@@ -74,19 +69,19 @@ export default () => {
         ),
       },
       {
-        title: 'Oops, there was an error',
-        color: 'danger',
-        iconType: 'help',
+        title: "Oops, there was an error",
+        color: "danger",
+        iconType: "help",
         text: <p>Sorry. We&rsquo;ll try not to let it happen it again.</p>,
       },
       {
-        title: 'Long toast',
-        color: 'warning',
-        iconType: 'clock',
+        title: "Long toast",
+        color: "warning",
+        iconType: "clock",
         toastLifeTimeMs: 15000,
         text: (
           <p>
-            This toast overrides the default <EuiCode>toastLifeTimeMs</EuiCode>{' '}
+            This toast overrides the default <EuiCode>toastLifeTimeMs</EuiCode>{" "}
             value and will be around for 15 seconds.
           </p>
         ),
