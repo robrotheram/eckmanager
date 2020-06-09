@@ -1,14 +1,11 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 
 import {
-  EuiCode,
   EuiGlobalToastList,
-  EuiLink,
 } from '@elastic/eui';
 
 let addToastHandler;
 let removeAllToastsHandler;
-let toastId = 0;
 
 
 export function Warning(title, message){

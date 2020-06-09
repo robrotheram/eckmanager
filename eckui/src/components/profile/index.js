@@ -1,33 +1,29 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom"
 import {
-    EuiCodeBlock,
   EuiPageContent,
   EuiPageContentHeader,
   EuiPageContentHeaderSection,
   EuiPageContentBody,
   EuiTitle,
   EuiFormRow,
-  EuiSwitch,
+  
   EuiButton,
   EuiAvatar,
   EuiFlexItem,
   EuiFlexGroup,
   EuiSpacer,
-  EuiText,
-  EuiCard,
-  EuiIcon,
+ 
   EuiFieldText,
   EuiFieldPassword,
-  EuiForm,
-  EuiPage,
-  EuiPageBody,
+  
   EuiHorizontalRule
 
 } from '@elastic/eui';
 import eckApi from "../../store";
 import {Warning, Success, Danger} from "../../store/notification"
-import Users from '../settings/users'
+
+
 class UserProfile extends Component {
     constructor(props) {
       super(props);
